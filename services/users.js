@@ -28,7 +28,9 @@ UserService.prototype.insertUser = function(body) {
     return this.userModel.insertUser(body).then(function (res) {
         console.log('====== res123333333', res)
         return res
-    });
+    }).catch(function (err) {
+        return {"error": "Duplicate Email"};
+    })
 }
 
 

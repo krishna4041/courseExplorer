@@ -5,7 +5,10 @@ const mongoose = require('../dbconnection');
 
 
 let users = new mongoose.Schema({
-  email: String,
+  email: {
+    type: String,
+    unique: true
+  },
   passHash: String,
   status: {
     type: String,
