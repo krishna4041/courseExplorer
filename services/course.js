@@ -17,7 +17,7 @@ courseService.prototype.updateCourse = function(courseId, body){
 
 courseService.prototype.getCourseByBody = function(body) {
     return this.courseModel.getCourseByBody(body).then (function (res) {
-        return Promise.map(res, function (r) {
+        return promise.map(res, function (r) {
             return commentsService.getCommentBycourseId(r.courseId).then(function (commentInfo) {
                 return {course: r, comments : commentInfo};
             })
