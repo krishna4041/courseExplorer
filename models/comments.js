@@ -6,7 +6,7 @@ function CommentsModel() {
 }
 
 CommentsModel.prototype.getCommentBycourseId = function (query) {
-    return this.model.findOne(query);    
+    return this.model.find(query);    
 }
 
 CommentsModel.prototype.updateCommentById = function(commentId, replies) {

@@ -17,11 +17,12 @@ courseService.prototype.updateCourse = function(courseId, body){
 
 courseService.prototype.getCourseByBody = function(body) {
     return this.courseModel.getCourseByBody(body).then (function (res) {
-        var courseId = res[0]._id;
-        console.log('================================== res at line no 21', res);
-        return commentsService.getCommentBycourseId(courseId).then(function (commentInfo) {
-            return [{course: res[0], comments : commentInfo}];
+        return Promise.map(res, function (r) {
+            return commentsService.getCommentBycourseId(r.courseId).then(function (commentInfo) {
+                return {course: r, comments : commentInfo};
+            })
         })
+        console.log('================================== res at line no 21', res);
     })
 }
 courseService.prototype.getallCourses = function () {
