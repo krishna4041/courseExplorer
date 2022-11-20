@@ -141,7 +141,7 @@ app.get('/ce/allComments', function (request, response) {
 
 
 
-app.put('/ce/comments/:commentId', function (request, response) {
+app.put('/ce/updatecomment/:commentId', function (request, response) {
     return CommentService.updateCommentById(request.params.commentId, request.body).then(function (res) {
         return response.send(res);
     })
