@@ -5,12 +5,17 @@ function UserService() {
     this.userModel = userModel
 }
 
+
+
 UserService.prototype.validateToken = function (token) {
     return this.userModel.getUserByToken(token).then(function (res) {
         if (!res) {
-            return false
+            return {"status": "failure"};
         }
-        return true
+        if (res.isAdmin) {
+            return {"status": "admin"};
+        }
+        return {"status": "success"};
     })
     .catch(function (err) {
         console.log("==== ERROR IN VALIDTE TOKEN", err);
@@ -45,7 +50,7 @@ UserService.prototype.logIn = function (body) {
             return {"status" : "User Not Activated"};            
         }
         if (bcrypt.compareSync(password, res.passHash)) {
-            return {"token": res.passHash};
+            return {"token": res.passHash, isAdmin: res.isAdmin};
         } else {
             return {"status" : "User Not Found"};
         }
