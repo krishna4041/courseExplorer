@@ -113,4 +113,21 @@ UserService.prototype.activateUserWithHash = function (passHash) {
     })
 }
 
+UserService.prototype.passwordReset = function (request) {
+    var newPassword = request.body.password;
+    var token = request.headers.token;
+    var self = this;
+    return this.validateToken(token).then (function (response) {
+        if (response && response['status'] !== 'failure') {
+            newPassword = bcrypt.hashSync(newPassword, 10);
+            return self.userModel.updateByCondition({passHash: token}, {passHash: newPassword}).then (function (res) {
+                return {"status": "success", "token": newPassword};
+            })
+        } else {
+            return {"error": "wrong password"};
+        }
+    })
+}
+
+
 module.exports = new UserService();

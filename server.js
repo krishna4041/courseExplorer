@@ -94,6 +94,14 @@ app.post('/ce/login', function (request, response) {
     })
 })
 
+app.post('/ce/passwordreset', function (request, response) {
+    return UserService.passwordReset(request).then(function (res) {
+        return response.send(res);
+    })
+})
+
+
+
 app.get('/ce/appControlList', function (request, response) {
     return AppControlListService.getAppControlListData().then(function (res) {
         return response.send(res);
