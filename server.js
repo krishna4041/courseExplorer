@@ -84,7 +84,7 @@ app.post('/ce/login', function (request, response) {
     return UserService.logIn(body).then(function (res) {
         if (res.status) {
             response.status(401)
-            response.send(res);
+            return response.send(res);
         }
         return response.send(res);
     })

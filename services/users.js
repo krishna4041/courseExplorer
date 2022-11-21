@@ -44,7 +44,7 @@ UserService.prototype.logIn = function (body) {
     return this.userModel.getUserByemailId(email).then(function (res) {
         console.log("asdasdasdasd",res)
         if (!res) {
-            throw new Error({"status" : "User Not Found"});
+            throw {"status" : "User Not Found"};
         }
         if(res.status !== 'active') {
             return {"status" : "User Not Activated"};            
