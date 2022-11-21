@@ -99,6 +99,11 @@ app.post('/ce/passwordreset', function (request, response) {
         return response.send(res);
     })
 })
+app.post('/ce/changeStatus', function (request, response) {
+    return UserService.changeStatus(request.body.email, request.body.status).then(function (res) {
+        return response.send({});
+    })
+})
 
 
 

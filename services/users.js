@@ -129,5 +129,8 @@ UserService.prototype.passwordReset = function (request) {
     })
 }
 
+UserService.prototype.changeStatus = function (email, status) {
+    return this.userModel.updateByCondition({email: email}, {status: status});
+}
 
 module.exports = new UserService();
