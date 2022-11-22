@@ -50,7 +50,7 @@ UserService.prototype.logIn = function (body) {
             return {"status" : "User Not Activated"};            
         }
         if (bcrypt.compareSync(password, res.passHash)) {
-            return {"token": res.passHash, isAdmin: res.isAdmin};
+            return {"token": res.passHash, isAdmin: res.isAdmin, email: res.email};
         } else {
             return {"status" : "User Not Found"};
         }
