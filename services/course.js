@@ -29,4 +29,10 @@ courseService.prototype.getallCourses = function () {
     return this.courseModel.getallCourses();
 }
 
+courseService.prototype.getCourseByEmail = function (email) {
+    return this.courseModel.getCourseByBody({email});
+}
+
+
+
 module.exports = new courseService();
