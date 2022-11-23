@@ -33,6 +33,10 @@ courseService.prototype.getCourseByEmail = function (email) {
     return this.courseModel.getCourseByBody({email});
 }
 
+courseService.prototype.deleteCourse = function(courseId) {
+    return this.courseModel.deleteCourse({_id: courseId});
+}
+
 
 
 module.exports = new courseService();

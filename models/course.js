@@ -23,4 +23,7 @@ courseModel.prototype.getallCourses = function () {
     return this.model.find({});
 }
 
+courseModel.prototype.deleteCourse = function (cnd) {
+    return this.model.remove(cnd);
+}
 module.exports = new courseModel();

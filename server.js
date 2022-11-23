@@ -225,6 +225,12 @@ app.post('/ce/updateCourse/:courseId', function (request, response) {
     })
 })
 
+app.delete('/ce/deleteCourse/:courseId', function (request, response) {
+    return CourseService.deleteCourse(request.params.courseId).then(function (res) {
+        return response.send(res);
+    })
+})
+
 app.listen(3000, function () {
 console.log("Started application on port %d", 3000)
 });
