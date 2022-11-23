@@ -181,7 +181,7 @@ app.post('/ce/insertCourse', function (request, response) {
 
 
 app.get('/ce/getCourseByEmail/:email', function (request, response) {
-    var email =  request.params.emailId;
+    var email =  request.params.email;
     return CourseService.getCourseByEmail(email).then (function (res) {
         return response.send(res);
     })
