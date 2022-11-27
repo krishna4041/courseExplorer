@@ -18,8 +18,15 @@ CommentsModel.prototype.postComment = function(body) {
     return this.model(body).save();
 }
 
-CommentsModel.prototype.allComments = function () {
-    return this.model.find({});
+CommentsModel.prototype.allComments = function (body) {
+    if(!body) {
+        body = {};
+    }
+    return this.model.find(body);
+}
+
+CommentsModel.prototype.deleteComment = function (condition) {
+    return this.model.remove(condition);
 }
 
 module.exports = new CommentsModel()

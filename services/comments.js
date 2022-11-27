@@ -25,12 +25,14 @@ CommentService.prototype.updateCommentById = function(commentId, r){
             comment = comment[0];
         }
         var replies = [];
-        if (comment.replies) {
+        if (comment.replies && r.replies) {
             comment.replies.push(r.replies);
             replies = comment.replies;
+            return self.commentsModel.updateCommentById(commentId, {replies});
+        };
+        if(r.status) {
+            return self.commentsModel.updateCommentById(commentId, {status: r.status});
         }
-        console.log('============================== here are the comments', JSON.stringify(replies));
-        return self.commentsModel.updateCommentById(commentId, {replies});
     })
 }
 
@@ -51,5 +53,12 @@ CommentService.prototype.allComments = function () {
 }
 
 
+CommentService.prototype.getInvalidComments = function () {
+    return this.commentsModel.allComments({status: "invalid"});
+}
+
+CommentService.prototype.deleteComment = function (commentId) {
+    return this.commentsModel.deleteComment({_id: commentId});
+}
 
 module.exports = new CommentService();

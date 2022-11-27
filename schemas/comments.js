@@ -14,7 +14,12 @@ let comments = new mongoose.Schema({
   createdOn: {
     type: Date,
     default: Date.now()
-  }
+  },
+  status: {
+    type: String,
+    enum : ['valid','invalid'],
+    default: 'valid'
+  },
 });
 
 const model = mongoose.model("comments", comments);

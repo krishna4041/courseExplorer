@@ -152,10 +152,29 @@ app.get('/ce/allComments', function (request, response) {
     })
 })
 
+app.get('/ce/getInvalidComments', function (request, response) {
+    return CommentService.getInvalidComments().then(function (res) {
+        response.send(res);
+    })
+    .catch(function (err) {
+        console.log('#########################################', err);
+        return response.status(400);
+    })
+})
 
 
 app.put('/ce/updatecomment/:commentId', function (request, response) {
     return CommentService.updateCommentById(request.params.commentId, request.body).then(function (res) {
+        return response.send(res);
+    })
+    .catch(function (err) {
+        console.log('############################################', err);
+        return response.status(400);
+    })
+})
+
+app.delete('/ce/deleteComment/:commentId', function (request, response) {
+    return CommentService.deleteComment(request.params.commentId).then (function (res) {
         return response.send(res);
     })
     .catch(function (err) {
