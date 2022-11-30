@@ -58,7 +58,7 @@ UserService.prototype.logIn = function (body) {
 }
 
 UserService.prototype.getInactiveUsers = function () {
-    return this.userModel.getInactiveUsers({status: "inactive", isAdmin: false}).then(function (res) {
+    return this.userModel.getInactiveUsers({isAdmin: false}).then(function (res) {
         return res;
     })
 }
@@ -68,6 +68,8 @@ UserService.prototype.activateUser = function (body) {
     var email = body.email;
     var node_mailer = require('nodemailer');
     var pass = "ksyexbcoamvvqdms"
+    var status = body.status;
+    var self = this;
 
     let transporter = node_mailer.createTransport({
         service: 'gmail',
@@ -77,32 +79,40 @@ UserService.prototype.activateUser = function (body) {
         }
     });
 
-    return this.userModel.getInactiveUsers({email}).then (function (res) {
-        res = res[0];
-        console.log('========================== here is the email', JSON.stringify(res))
-        var passHash = res.passHash;
-        var link = 'http://localhost:3000/ce/activateUser/' + passHash + '/';
-        let mailOptions = {
-            from: 'krishna.5053@gmail.com',
-            to: email,
-            subject: 'Activation Link For Course Explorer',
-            text: `Hello, please find the activation link below ${link}`
-        };
+    if (status === 'activate') {
 
-        return new Promise(function (resolve, reject) {
-            transporter.sendMail(mailOptions, function(err, data) {
-                if (err) {
-                console.log("Error " + err);
-                } else {
-                resolve({});
-                console.log("Email sent successfully");
-                }
+        return this.userModel.getInactiveUsers({email}).then (function (res) {
+            res = res[0];
+            console.log('========================== here is the email', JSON.stringify(res))
+            var passHash = res.passHash;
+            var link = 'http://localhost:3000/ce/activateUser/' + passHash + '/';
+            let mailOptions = {
+                from: 'krishna.5053@gmail.com',
+                to: email,
+                subject: 'Activation Link For Course Explorer',
+                text: `Hello, please find the activation link below ${link}`
+            };
+    
+            return new Promise(function (resolve, reject) {
+                transporter.sendMail(mailOptions, function(err, data) {
+                    if (err) {
+                    console.log("Error " + err);
+                    } else {
+                    resolve({});
+                    console.log("Email sent successfully");
+                    }
+                })
+            })
+        }).then (function (res) {
+            return self.userModel.updateByCondition({email}, {status: "pending"}).then(function (r) {
+                return res;
             })
         })
-    }).then (function (res) {
-        console.log('===================== here at line 94')
-        return res;
-    })
+    } else {
+        return self.userModel.updateByCondition({email}, {status: "suspended"}).then(function (r) {
+            return res;
+        })
+    }
 }
 
 UserService.prototype.activateUserWithHash = function (passHash) {

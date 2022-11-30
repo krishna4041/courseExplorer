@@ -12,7 +12,7 @@ let users = new mongoose.Schema({
   passHash: String,
   status: {
     type: String,
-    enum : ['active','inactive', 'pending'],
+    enum : ['active','inactive', 'pending', "suspended"],
     default: 'inactive'
   },
   isAdmin: {
