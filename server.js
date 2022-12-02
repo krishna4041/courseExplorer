@@ -5,6 +5,7 @@ var AppControlListService = require('./services/AppControlList');
 var CommentService = require('./services/comments');
 var CourseService = require('./services/course');
 var cors = require('cors');
+var fileUpload = require("express-fileupload");
 
 
 // var allowCrossDomain = function(req, res, next) {
@@ -31,6 +32,7 @@ response.send("Hello World!")
 })
 
 app.use(express.json());
+app.use(fileUpload());
 
 
 app.get('/ce/activateuser/:passhash', function (request, response) {
@@ -249,6 +251,42 @@ app.delete('/ce/deleteCourse/:courseId', function (request, response) {
         return response.send(res);
     })
 })
+
+app.post("/ce/upload", function (req, res) {
+    console.log(req.files);
+    if (req.files && Object.keys(req.files).length !== 0) {
+        
+        const uploadedFile = req.files.uploadFile;
+    
+
+        const uploadPath = __dirname
+            + "/files/" + uploadedFile.name;
+    
+        uploadedFile.mv(uploadPath, function (err) {
+        if (err) {
+            console.log(err);
+            res.send("Failed !!");
+        } else res.send("Successfully Uploaded !!");
+        });
+    } else {
+        res.send("No file uploaded !!");
+    }
+});
+    
+app.get("/download/:courseId", function (req, res) {
+    var courseId = req.params.courseId;
+    return CourseService.getCourseByBody({_id: courseId}).then (function (courseInfo) {
+        var fileName = courseId + courseInfo.fileName;
+        fileName = `/files/${fileName}`;
+        res.download(__dirname + fileName, function (err) {
+            if (err) {
+            console.log(err);
+            }
+        });
+    });
+});
+    
+
 
 app.listen(3000, function () {
 console.log("Started application on port %d", 3000)
