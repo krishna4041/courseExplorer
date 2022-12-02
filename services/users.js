@@ -110,7 +110,7 @@ UserService.prototype.activateUser = function (body) {
         })
     } else {
         return self.userModel.updateByCondition({email}, {status: "suspended"}).then(function (r) {
-            return res;
+            return r;
         })
     }
 }
