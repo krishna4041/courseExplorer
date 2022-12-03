@@ -24,8 +24,11 @@ CommentService.prototype.updateCommentById = function(commentId, r){
         if(comment) {
             comment = comment[0];
         }
-        var replies = [];
-        if (comment.replies && r.replies) {
+        var replies = []
+        if (r.replies) {
+            if(!comment.replies) {
+                comment.replies = [];
+            }
             comment.replies.push(r.replies);
             replies = comment.replies;
             return self.commentsModel.updateCommentById(commentId, {replies});
