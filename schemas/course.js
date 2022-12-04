@@ -18,6 +18,7 @@ let course = new mongoose.Schema({
   grading: mongoose.Schema.Types.Mixed,
   year: String,
   grades: mongoose.Schema.Types.Mixed,
+  fileName: String,
   createdOn: {
     type: Date,
     default: Date.now()
